@@ -1,0 +1,62 @@
+//General JDBC Code to connect to MySQL Database
+
+package JDBC;
+
+import java.sql.*;
+
+public class JDBCMYSQL {
+    // Driver name
+    static final String Driver = "com.mysql.jdbc.Driver";
+
+    // Query
+    static final String query = "select * from employee";
+
+    // Database Path
+    static final String db_path = "jdbc:mysql://localhost/database_name";
+
+    // Mysql Credentials
+    static final String username = "username";
+    static final String password = "password";
+
+    public static void main(String[] args) {
+        Connection con = null;
+        Statement st = null;
+        try {
+            Class.forName(Driver);
+            con = DriverManager.getConnection(db_path,username,password);
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                // Printing Data
+                System.out.println("First_Name: " + rs.getString("First_name") + "\tLast_Name: " + rs.getString("Last_name") + "\tEmployee_Id: " + rs.getInt("Employee_id") + "\tDate_Of_Birth: " + rs.getString("DOB") + "\tSalary: " + rs.getDouble("Salary") + "\tDepartment_id: " + rs.getInt("Department_Id"));
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(con!=null){
+                    con.close();
+                }
+            }
+            catch (SQLException se){
+                se.printStackTrace();
+            }
+            try {
+                if(st!=null){
+                    st.close();
+                }
+            }catch (SQLException s){
+                s.printStackTrace();
+            }
+        }
+    }
+
+}
